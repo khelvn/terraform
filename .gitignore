@@ -3,6 +3,13 @@
 *.tfstate
 *.tfstate.*
 
+*.tfstate.backup
+*.log
+*.pem
+*.key
+terraform.tfvars
+backend.hcl
+
 *.tfvars
 *.tfvars.json
 override.tf
