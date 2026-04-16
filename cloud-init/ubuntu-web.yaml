@@ -1,0 +1,40 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+
+packages:
+  - nginx
+  - unattended-upgrades
+
+write_files:
+  - path: /var/www/html/index.html
+    permissions: "0644"
+    owner: root:root
+    content: |
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>NHS Web Server</title>
+      </head>
+      <body>
+        <h1>NHS Technical Test Environment</h1>
+        <p>This web server was deployed with Terraform on Azure.</p>
+        <p>The VM is hosted in a private subnet behind an Azure Load Balancer.</p>
+      </body>
+      </html>
+
+  - path: /etc/apt/apt.conf.d/20auto-upgrades
+    permissions: "0644"
+    owner: root:root
+    content: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Unattended-Upgrade "1";
+
+runcmd:
+  - systemctl enable nginx
+  - systemctl restart nginx
+  - systemctl enable unattended-upgrades
+
+final_message: "cloud-init completed successfully"
